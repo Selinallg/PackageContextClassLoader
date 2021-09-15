@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         HashMap<String, DeviceInfo> deviceInfo = parseDeviceInfo(); // 解析xml定义文件
 
         // 加载接口具体实现的经过dex转换过的jar包
-        DexClassLoader dexClassLoader = getClassLoader("pluginDevInfo.jar");
+        DexClassLoader dexClassLoader = NoloLoarder.getClassLoader(this,"pluginDevInfo.jar");
         // 获取COMMON模块构造方法及参数
         DeviceInfo localDeviceInfo = deviceInfo.get("COMMON");
         String className = localDeviceInfo.name;
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
     // =============================================================================================
     public void testDexClassLoaderWithIf() {
         // 加载接口具体实现的经过dex转换过的jar包
-        DexClassLoader dexClassLoader = getClassLoader("pluginImpl.jar");
+        DexClassLoader dexClassLoader = NoloLoarder.getClassLoader(this,"pluginImpl.jar");
         try {
             // 加载接口具体实现类
             Class pluginImplClazz = dexClassLoader.loadClass("com.shellever.plugin.PluginImpl");
@@ -181,49 +181,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private DexClassLoader getClassLoader(String paramString) {
-        String dexPath = new File(getAppJarDir(), paramString).getAbsolutePath(); // 经过dex转码后的jar包存放路径
-        String optimizedDirectory = getAppDexDir().getAbsolutePath();   // dex优化文件存放路径
-        String librarySearchPath = getAppLibDir().getAbsolutePath();    // 本地依赖库存放路径
-        ClassLoader parent = getClassLoader();                          // 父类的类加载器
-        return new DexClassLoader(dexPath, optimizedDirectory, librarySearchPath, parent);
-    }
-
-    // Android/data/<package-name>/driver/lib/
-    public File getAppLibDir() {
-        File localFile = new File(getAppHomeDir(), "driver/lib/");
-        if (!localFile.exists()) {
-            localFile.mkdirs();
-        }
-        return localFile;
-    }
-
-    // /storage/emulated/0/Android/data/com.shellever.dexclassloader/driver/dex
-    public File getAppDexDir() {
-        File localFile = new File(getAppHomeDir(), "driver/dex/");
-        if (!localFile.exists()) {
-            localFile.mkdirs();
-        }
-        return localFile;
-    }
-
-    // Android/data/<package-name>/driver/jar/
-    public File getAppJarDir() {
-        File localFile = new File(getAppHomeDir(), "driver/jar/");
-        if (!localFile.exists()) {
-            localFile.mkdirs();
-        }
-        return localFile;
-    }
-
-    public File getAppHomeDir() {
-        String packageName = getPackageName();
-        File sdcardDir = Environment.getExternalStorageDirectory(); // /storage/emulated/0/
-        String appHomeDir = sdcardDir + File.separator + "Android" + File.separator + "data" + File.separator + packageName + File.separator;
-        File localFile = new File(appHomeDir);
-        if (!localFile.exists()) {
-            localFile.mkdirs();
-        }
-        return localFile;
-    }
 }
