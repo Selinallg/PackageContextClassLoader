@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         // 使用反射方式调用dex里面的方法
         Log.d(TAG, "testDexClassLoaderWithReflect()");
         testDexClassLoaderWithReflect();
+
+        String devManufacturer = ChannelHelper.getDevManufacturer();
     }
 
     public void testDexClassLoaderWithReflect() {
