@@ -54,4 +54,38 @@ public class NoloLoarder {
         }
         return localFile;
     }
+
+
+    public static Class<?>[] getParamType(String paramString) {
+        if ((paramString == null) || ("".equals(paramString))) {
+            return null;
+        }
+        String[] paramStringArray = paramString.split(" ");
+        Class[]  arrayOfClass     = new Class[paramStringArray.length];
+        int      i                = 0;
+        while (i < paramStringArray.length) {
+            arrayOfClass[i] = getClassType(paramStringArray[i]);
+            i += 1;
+        }
+        return arrayOfClass;
+    }
+
+    public static Class<?> getClassType(String paramString) {
+        if ("Context".equals(paramString)) {
+            return Context.class;
+        }
+        if ("String".equals(paramString)) {
+            return String.class;
+        }
+        if ("Int".equals(paramString)) {
+            return Integer.TYPE;
+        }
+        if ("StringArray".equals(paramString)) {
+            return String[].class;
+        }
+        if ("ByteArray".equals(paramString)) {
+            return byte[].class;
+        }
+        return null;
+    }
 }

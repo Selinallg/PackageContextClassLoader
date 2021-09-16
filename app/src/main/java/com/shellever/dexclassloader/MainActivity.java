@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             Class  pluginDevInfoClazz = dexClassLoader.loadClass(className);
-            Method localMethod        = pluginDevInfoClazz.getMethod("getDevModel", null);
+            Method localMethod        = pluginDevInfoClazz.getMethod("getDevModel",  new Class[0]);
             String returnType         = localMethod.getReturnType().getSimpleName();
             Log.d(TAG, "testDexClassLoaderWithReflect2: returnType=" + returnType);
             Object localObject = null;
@@ -202,8 +202,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "functionName = " + functionName);
         try {
             Class  pluginDevInfoClazz = dexClassLoader.loadClass(className);
-            Object localObject        = pluginDevInfoClazz.getConstructor(getParamType(classArgs)).newInstance(new Object[]{this});
-            Method localMethod        = localObject.getClass().getDeclaredMethod(functionName, getParamType(functionArgs));
+            Object localObject        = pluginDevInfoClazz.getConstructor(NoloLoarder.getParamType(classArgs)).newInstance(new Object[]{this});
+            Method localMethod        = localObject.getClass().getDeclaredMethod(functionName, NoloLoarder.getParamType(functionArgs));
             String returnType         = localMethod.getReturnType().getSimpleName(); // 获取方法返回值类型
             if ("String".equals(returnType)) {
                 // 通过反射调用接口方法
@@ -267,39 +267,6 @@ public class MainActivity extends AppCompatActivity {
 
         public retResult() {
         }
-    }
-
-    private Class<?>[] getParamType(String paramString) {
-        if ((paramString == null) || ("".equals(paramString))) {
-            return null;
-        }
-        String[] paramStringArray = paramString.split(" ");
-        Class[]  arrayOfClass     = new Class[paramStringArray.length];
-        int      i                = 0;
-        while (i < paramStringArray.length) {
-            arrayOfClass[i] = getClassType(paramStringArray[i]);
-            i += 1;
-        }
-        return arrayOfClass;
-    }
-
-    private Class<?> getClassType(String paramString) {
-        if ("Context".equals(paramString)) {
-            return Context.class;
-        }
-        if ("String".equals(paramString)) {
-            return String.class;
-        }
-        if ("Int".equals(paramString)) {
-            return Integer.TYPE;
-        }
-        if ("StringArray".equals(paramString)) {
-            return String[].class;
-        }
-        if ("ByteArray".equals(paramString)) {
-            return byte[].class;
-        }
-        return null;
     }
 
     // =============================================================================================
