@@ -2,18 +2,23 @@ package com.shellever.dexclassloader;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 
 import dalvik.system.DexClassLoader;
 
 public class NoloLoarder {
+    private static final String TAG = "DexClassLoader";
 
-    public static DexClassLoader getClassLoader(Context mContext ,String paramString) {
-        String dexPath = new File(getAppJarDir(mContext), paramString).getAbsolutePath(); // 经过dex转码后的jar包存放路径
-        String optimizedDirectory = getAppDexDir(mContext).getAbsolutePath();   // dex优化文件存放路径
-        String librarySearchPath = getAppLibDir(mContext).getAbsolutePath();    // 本地依赖库存放路径
-        ClassLoader parent = mContext.getClassLoader();                          // 父类的类加载器
+    public static DexClassLoader getClassLoader(Context mContext, String paramString) {
+        String      dexPath            = new File(getAppJarDir(mContext), paramString).getAbsolutePath(); // 经过dex转码后的jar包存放路径
+        String      optimizedDirectory = getAppDexDir(mContext).getAbsolutePath();   // dex优化文件存放路径
+        String      librarySearchPath  = getAppLibDir(mContext).getAbsolutePath();    // 本地依赖库存放路径
+        ClassLoader parent             = mContext.getClassLoader();                          // 父类的类加载器
+        Log.d(TAG, "getClassLoader: dexPath=" + dexPath);
+        Log.d(TAG, "getClassLoader: optimizedDirectory=" + optimizedDirectory);
+        Log.d(TAG, "getClassLoader: librarySearchPath=" + librarySearchPath);
         return new DexClassLoader(dexPath, optimizedDirectory, librarySearchPath, parent);
     }
 
@@ -46,9 +51,11 @@ public class NoloLoarder {
 
     public static File getAppHomeDir(Context mContext) {
         String packageName = mContext.getPackageName();
-        File sdcardDir = Environment.getExternalStorageDirectory(); // /storage/emulated/0/
-        String appHomeDir = sdcardDir + File.separator + "Android" + File.separator + "data" + File.separator + packageName + File.separator;
-        File localFile = new File(appHomeDir);
+        File   sdcardDir   = Environment.getExternalStorageDirectory(); // /storage/emulated/0/
+        // sucess
+        //String appHomeDir = sdcardDir + File.separator + "Android" + File.separator + "data" + File.separator + packageName + File.separator;
+        String appHomeDir = sdcardDir.getAbsolutePath();
+        File   localFile  = new File(appHomeDir);
         if (!localFile.exists()) {
             localFile.mkdirs();
         }

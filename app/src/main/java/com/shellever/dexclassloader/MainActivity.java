@@ -50,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
         String devModel = ChannelHelper.getDevModel();
         Log.d(TAG, "onCreate: devModel=" + devModel);
 
-        //testDexClassLoaderWithReflect2();
-        //testDexClassLoaderWithReflect3();
-        testDexClassLoaderWithReflect4();
+//        testDexClassLoaderWithReflect2();
+        testDexClassLoaderWithReflect3();
+        //testDexClassLoaderWithReflect4();
     }
 
     /**
