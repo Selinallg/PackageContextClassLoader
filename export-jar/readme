@@ -1,0 +1,6 @@
+push path:
+        adb push pluginDevInfo.jar /storage/emulated/0/Android/data/com.shellever.dexclassloader/driver/jar
+
+        jar 转 dex
+
+        dx --dex --output channel.jar channel-origin.jar
