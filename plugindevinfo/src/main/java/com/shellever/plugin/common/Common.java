@@ -17,4 +17,8 @@ public class Common {
     public String getDeviceInfo(){
         return "Shellever.HPF";
     }
+
+    public String getExpInfo(String paraJaon){
+        return "return: "+paraJaon;
+    }
 }
