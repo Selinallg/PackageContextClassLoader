@@ -5,4 +5,9 @@ public class PluginImpl implements PluginIf {
     public String getDeviceInfo() {
         return "Shellever";
     }
+
+    @Override
+    public String getExpInfo(String s) {
+        return "return:"+s;
+    }
 }
