@@ -1,11 +1,11 @@
 package com.shellever.dexclassloader;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.XmlResourceParser;
-import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -21,7 +21,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import dalvik.system.DexClassLoader;
-import dalvik.system.PathClassLoader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,8 +50,28 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: devModel=" + devModel);
 
 //        testDexClassLoaderWithReflect2();
-        testDexClassLoaderWithReflect3();
+//        testDexClassLoaderWithReflect3();
         //testDexClassLoaderWithReflect4();
+        testDexClassLoaderWithReflect5();
+
+
+
+
+
+        File rootFile = null;
+        try {
+            Context con       = this.createPackageContext("com.nolovr.core.demo.walle", Context.CONTEXT_IGNORE_SECURITY);
+            String  sourceDir = con.getApplicationInfo().sourceDir;
+            rootFile = new File(sourceDir);
+            Log.d(TAG, "getAppHomeDir: sourceDir=" + sourceDir);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
     }
 
     /**
@@ -182,6 +201,54 @@ public class MainActivity extends AppCompatActivity {
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 反射调用静态方法，有参数 Context
+     */
+    public void testDexClassLoaderWithReflect5() {
+
+        // 加载接口具体实现的经过dex转换过的jar包
+        DexClassLoader dexClassLoader = NoloLoarder.getClassLoader(this, "channel-gsxr.so");
+        String         className      = "com.nolovr.androidsdkclient.ChannelHelper";
+        Log.d(TAG, "className = " + className);
+
+        //Class<?> aClass = Class.forName("com.shellever.dexclassloader.ChannelHelper");
+
+
+        try {
+            Class  pluginDevInfoClazz = dexClassLoader.loadClass(className);
+            Method localMethod        = pluginDevInfoClazz.getMethod("getChannel", Context.class);
+            String returnType         = localMethod.getReturnType().getSimpleName();
+            Log.d(TAG, "testDexClassLoaderWithReflect5: returnType=" + returnType);
+            Object localObject = null;
+            if ("String".equals(returnType)) {
+                // 通过反射调用接口方法
+                // localObject 如果是实例方法，为实例对象；如果是静态方法，则为null
+                // 第二次参数 反射方法需要传入的参数
+                Object[] params = new Object[1];
+                params[0] = this;
+                String devinfo = (String) localMethod.invoke(localObject, params);
+                Log.d(TAG, "testDexClassLoaderWithReflect5: " + devinfo);
+                mLoaderResultTv.append("\n" + devinfo);
+            }
+        } catch (ClassNotFoundException e) {
+            Log.e(TAG, "testDexClassLoaderWithReflect5: ",e);
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            Log.e(TAG, "testDexClassLoaderWithReflect5: ", e);
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.e(TAG, "testDexClassLoaderWithReflect5: ", e);
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            Log.e(TAG, "testDexClassLoaderWithReflect5: ", e);
+            e.printStackTrace();
+        } catch (Exception e) {
+            Log.e(TAG, "testDexClassLoaderWithReflect5: ", e);
             e.printStackTrace();
         }
     }

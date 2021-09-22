@@ -2,3 +2,18 @@
 
 链接：
      https://github.com/Selinallg/walle.git
+
+
+
+
+
+
+https://www.jianshu.com/p/2586cb15a2ca
+
+=============
+
+java -jar channel-operater.jar put -c nolo -e msg=xxxxx D:\work\androidWorkspace\sonic\video\DexClassLoader\app\build\outputs\apk\debug\app-debug.apk
+
+========生成 app-debug_nolo.apk===
+
+java -jar channel-operater.jar show D:\work\androidWorkspace\sonic\video\DexClassLoader\app\build\outputs\apk\debug\app-debug_nolo.apk
