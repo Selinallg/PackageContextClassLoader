@@ -103,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
         String         className      = "com.shellever.dexclassloader.ChannelHelper";
         Log.d(TAG, "className = " + className);
 
+        //Class<?> aClass = Class.forName("com.shellever.dexclassloader.ChannelHelper");
+
 
         try {
             Class  pluginDevInfoClazz = dexClassLoader.loadClass(className);

@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DexClassLoader.iml" filepath="$PROJECT_DIR$/DexClassLoader.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/plugindevinfo/plugindevinfo.iml" filepath="$PROJECT_DIR$/plugindevinfo/plugindevinfo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pluginif/pluginif.iml" filepath="$PROJECT_DIR$/pluginif/pluginif.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pluginimpl/pluginimpl.iml" filepath="$PROJECT_DIR$/pluginimpl/pluginimpl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DexClassLoader.iml" filepath="$PROJECT_DIR$/.idea/modules/DexClassLoader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/DexClassLoader.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/DexClassLoader.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/plugindevinfo/DexClassLoader.plugindevinfo.iml" filepath="$PROJECT_DIR$/.idea/modules/plugindevinfo/DexClassLoader.plugindevinfo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pluginif/DexClassLoader.pluginif.iml" filepath="$PROJECT_DIR$/.idea/modules/pluginif/DexClassLoader.pluginif.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pluginimpl/DexClassLoader.pluginimpl.iml" filepath="$PROJECT_DIR$/.idea/modules/pluginimpl/DexClassLoader.pluginimpl.iml" />
     </modules>
   </component>
 </project>
