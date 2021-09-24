@@ -20,7 +20,8 @@ public class NoloLoarder {
         Log.d(TAG, "getClassLoader: dexPath=" + dexPath);
         Log.d(TAG, "getClassLoader: optimizedDirectory=" + optimizedDirectory);
         Log.d(TAG, "getClassLoader: librarySearchPath=" + librarySearchPath);
-        return new DexClassLoader(dexPath, optimizedDirectory, librarySearchPath, parent);
+        return new DexClassLoader(dexPath, optimizedDirectory, librarySearchPath, parent);// sonic
+//        return new DexClassLoader(dexPath, dexPath, librarySearchPath, parent);// skyworth s802
     }
 
     // Android/data/<package-name>/driver/lib/
@@ -60,6 +61,7 @@ public class NoloLoarder {
         File rootFile = null;
         try {
             Context con       = mContext.createPackageContext("com.nolovr.core.demo.walle", Context.CONTEXT_IGNORE_SECURITY);
+//            Context con       = mContext.createPackageContext("com.ssnwt.vr.server", Context.CONTEXT_IGNORE_SECURITY);
             String  sourceDir = con.getApplicationInfo().sourceDir;
             String  nativeLibraryDir = con.getApplicationInfo().nativeLibraryDir;
             rootFile = new File(nativeLibraryDir);
