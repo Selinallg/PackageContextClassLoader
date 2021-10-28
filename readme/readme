@@ -17,3 +17,27 @@ java -jar channel-operater.jar put -c nolo -e msg=xxxxx D:\work\androidWorkspace
 ========生成 app-debug_nolo.apk===
 
 java -jar channel-operater.jar show D:\work\androidWorkspace\sonic\video\DexClassLoader\app\build\outputs\apk\debug\app-debug_nolo.apk
+
+
+
+==================
+
+➜  java -jar ./CheckAndroidSignature.jar ./YSDK_Android_1.3.1_629-debug-ysdktest-inner.apk
+{"ret":0,"msg":"","isV1OK":false,"isV2":true,"isV2OK":true,"isV3":true,"isV3OK":true,"keystoreMd5":"80fa5a8552e418f6bd805c65bcddf4c8"}
+
+
+➜  java -jar ./getPackageInfo.jar ./YSDK_Android_1.3.1_629-debug-ysdktest-inner.apk
+
+执行结果: 成功
+应用信息:
+  包名: com.huohoubrowser
+  版本名: 4.0.1.8
+  版本号: 4018
+  签名文件MD5: f430582429f49b685c3572ba28995e39
+  V1签名验证通过: false
+  使用V2签名: false
+  V2签名验证通过: false
+  使用V3签名: false
+  V3签名验证通过: false
+  签名验证详细信息: {"ret":0,"msg":"","isV1OK":false,"isV2":true,"isV2OK":true,"isV3":true,"isV3OK":true,"keystoreMd5":"80fa5a8552e418f6bd805c65bcddf4c8"}
+

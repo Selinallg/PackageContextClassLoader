@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.content.res.XmlResourceParser;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import dalvik.system.DexClassLoader;
+import dalvik.system.PathClassLoader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,27 +51,24 @@ public class MainActivity extends AppCompatActivity {
         String devModel = ChannelHelper.getDevModel();
         Log.d(TAG, "onCreate: devModel=" + devModel);
 
+
 //        testDexClassLoaderWithReflect2();
 //        testDexClassLoaderWithReflect3();
         //testDexClassLoaderWithReflect4();
-        testDexClassLoaderWithReflect5();
+//        testDexClassLoaderWithReflect5();
 
-
-
+        testPathClassLoaderWithReflect();
 
 
         File rootFile = null;
         try {
-            Context con       = this.createPackageContext("com.nolovr.core.demo.walle", Context.CONTEXT_IGNORE_SECURITY);
+            Context con       = this.createPackageContext("com.nolovr.core.demo.pathclassloader", Context.CONTEXT_IGNORE_SECURITY);
             String  sourceDir = con.getApplicationInfo().sourceDir;
             rootFile = new File(sourceDir);
             Log.d(TAG, "getAppHomeDir: sourceDir=" + sourceDir);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-
-
-
 
 
     }
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             Class  pluginDevInfoClazz = dexClassLoader.loadClass(className);
-            Method localMethod        = pluginDevInfoClazz.getMethod("getDevModel",  new Class[0]);
+            Method localMethod        = pluginDevInfoClazz.getMethod("getDevModel", new Class[0]);
             String returnType         = localMethod.getReturnType().getSimpleName();
             Log.d(TAG, "testDexClassLoaderWithReflect2: returnType=" + returnType);
             Object localObject = null;
@@ -236,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                 mLoaderResultTv.append("\n" + devinfo);
             }
         } catch (ClassNotFoundException e) {
-            Log.e(TAG, "testDexClassLoaderWithReflect5: ",e);
+            Log.e(TAG, "testDexClassLoaderWithReflect5: ", e);
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
             Log.e(TAG, "testDexClassLoaderWithReflect5: ", e);
@@ -249,6 +248,74 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         } catch (Exception e) {
             Log.e(TAG, "testDexClassLoaderWithReflect5: ", e);
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 反射调用静态方法，有参数 Context
+     */
+    public void testPathClassLoaderWithReflect() {
+
+        //获取皮肤插件apk的上下文，同时忽略安全警告且可访问代码
+        Context plugContext             = null;
+        PathClassLoader pathClassLoader = null;
+        try {
+
+            String packageName = this.getPackageName();// "com.nolovr.core.demo.pathclassloader"
+            plugContext = this.createPackageContext(packageName, Context.CONTEXT_IGNORE_SECURITY | Context.CONTEXT_INCLUDE_CODE);
+//            plugContext = this.createPackageContext("com.ssnwt.vr.server", Context.CONTEXT_IGNORE_SECURITY | Context.CONTEXT_INCLUDE_CODE);
+            String packageCodePath = plugContext.getPackageCodePath();
+            // 在插件R文件中寻找插件资源的id
+            pathClassLoader = new PathClassLoader(packageCodePath, ClassLoader.getSystemClassLoader());
+
+            Log.d(TAG, "testPathClassLoaderWithReflect: packageCodePath="+packageCodePath);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // 加载接口具体实现的经过dex转换过的jar包
+//        DexClassLoader dexClassLoader = NoloLoarder.getClassLoader(this, "channel-gsxr.so");
+        String className = "gsxr.nvr.android.channel.ChannelHelper";
+        Log.d(TAG, "className = " + className);
+
+        //Class<?> aClass = Class.forName("com.shellever.dexclassloader.ChannelHelper");
+
+
+        try {
+            Class  pluginDevInfoClazz = pathClassLoader.loadClass(className);
+            //Method localMethod        = pluginDevInfoClazz.getMethod("getChannel", Context.class);
+            Method localMethod        = pluginDevInfoClazz.getMethod("getMsg", Context.class,String.class);
+            String returnType         = localMethod.getReturnType().getSimpleName();
+            Log.d(TAG, "testDexClassLoaderWithReflect5: returnType=" + returnType);
+            Object localObject = null;
+            if ("String".equals(returnType)) {
+                // 通过反射调用接口方法
+                // localObject 如果是实例方法，为实例对象；如果是静态方法，则为null
+                // 第二次参数 反射方法需要传入的参数
+                Object[] params = new Object[2];
+                params[0] = this;
+                params[1] = "appKey";
+                String devinfo = (String) localMethod.invoke(localObject, params);
+                Log.d(TAG, "testPathClassLoaderWithReflect: devinfo" + devinfo);
+                mLoaderResultTv.append("\n" + devinfo);
+            }
+        } catch (ClassNotFoundException e) {
+            Log.e(TAG, "testPathClassLoaderWithReflect: ", e);
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            Log.e(TAG, "testPathClassLoaderWithReflect: ", e);
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.e(TAG, "testPathClassLoaderWithReflect: ", e);
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            Log.e(TAG, "testPathClassLoaderWithReflect: ", e);
+            e.printStackTrace();
+        } catch (Exception e) {
+            Log.e(TAG, "testPathClassLoaderWithReflect: ", e);
             e.printStackTrace();
         }
     }

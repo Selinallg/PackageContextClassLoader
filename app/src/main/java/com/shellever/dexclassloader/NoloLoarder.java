@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.util.Log;
-
 import java.io.File;
 
 import dalvik.system.DexClassLoader;
@@ -14,7 +13,8 @@ public class NoloLoarder {
 
     public static DexClassLoader getClassLoader(Context mContext, String paramString) {
         String      dexPath            = new File(getAppJarDir(mContext), paramString).getAbsolutePath(); // 经过dex转码后的jar包存放路径
-        String      optimizedDirectory = getAppDexDir(mContext).getAbsolutePath();   // dex优化文件存放路径
+       // String      optimizedDirectory = getAppDexDir(mContext).getAbsolutePath();   // dex优化文件存放路径
+        String      optimizedDirectory = mContext.getApplicationInfo().dataDir;   // dex优化文件存放路径
         String      librarySearchPath  = getAppLibDir(mContext).getAbsolutePath();    // 本地依赖库存放路径
         ClassLoader parent             = mContext.getClassLoader();                          // 父类的类加载器
         Log.d(TAG, "getClassLoader: dexPath=" + dexPath);
@@ -36,6 +36,7 @@ public class NoloLoarder {
     // /storage/emulated/0/Android/data/com.shellever.dexclassloader/driver/dex
     public static File getAppDexDir(Context mContext) {
         File localFile = new File(getAppHomeDir(mContext), "driver/dex/");
+//        File localFile = getAppHomeDir(mContext);
         if (!localFile.exists()) {
             localFile.mkdirs();
         }
@@ -44,8 +45,8 @@ public class NoloLoarder {
 
     // Android/data/<package-name>/driver/jar/
     public static File getAppJarDir(Context mContext) {
-        //File localFile = new File(getAppHomeDir(mContext), "driver/jar/");
-        File localFile = getAppHomeDir(mContext);
+        File localFile = new File(getAppHomeDir(mContext), "driver/jar/");
+//        File localFile = getAppHomeDir(mContext);
         if (!localFile.exists()) {
             localFile.mkdirs();
         }
@@ -60,7 +61,7 @@ public class NoloLoarder {
         //File rootFile = new File("/data/app/com.nolovr.core.demo.walle/base.apk!/assets/");
         File rootFile = null;
         try {
-            Context con       = mContext.createPackageContext("com.nolovr.core.demo.walle", Context.CONTEXT_IGNORE_SECURITY);
+            Context con       = mContext.createPackageContext("com.ssnwt.vr.server", Context.CONTEXT_IGNORE_SECURITY);
 //            Context con       = mContext.createPackageContext("com.ssnwt.vr.server", Context.CONTEXT_IGNORE_SECURITY);
             String  sourceDir = con.getApplicationInfo().sourceDir;
             String  nativeLibraryDir = con.getApplicationInfo().nativeLibraryDir;
@@ -73,9 +74,10 @@ public class NoloLoarder {
 
 
         // sucess
-        //String appHomeDir = sdcardDir + File.separator + "Android" + File.separator + "data" + File.separator + packageName + File.separator;
-        //String appHomeDir = sdcardDir.getAbsolutePath();
-        String appHomeDir = rootFile.getAbsolutePath();
+//        String appHomeDir = sdcardDir + File.separator + "Android" + File.separator + "data" + File.separator + packageName + File.separator;
+//        String appHomeDir = sdcardDir.getAbsolutePath();
+//        String appHomeDir = rootFile.getAbsolutePath();
+        String appHomeDir = sdcardDir.getAbsolutePath();
         File   localFile  = new File(appHomeDir);
         if (!localFile.exists()) {
             localFile.mkdirs();
